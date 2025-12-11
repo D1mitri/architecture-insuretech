@@ -1,0 +1,151 @@
+graphql:
+  schema: |
+    type Query {
+      """
+      Получить информацию о клиенте по ID
+      """
+      client(id: ID!): Client
+    
+      """
+      Получить список клиентов
+      """
+      clients: [Client]
+    }
+
+    """
+    Клиент - основная сущность
+    """
+    type Client {
+      """
+      Уникальный идентификатор клиента
+      """
+      id: ID!
+    
+      """
+      Имя клиента
+      """
+      name: String!
+    
+      """
+      Возраст клиента
+      """
+      age: Int!
+    
+      """
+      Документы клиента
+      """
+      documents: [Document!]!
+    
+      """
+      Родственники клиента
+      """
+      relatives: [Relative!]!
+    }
+
+    """
+    Документ клиента
+    """
+    type Document {
+      """
+      Уникальный идентификатор документа
+      """
+      id: ID!
+    
+      """
+      Тип документа (паспорт, водительское удостоверение и т.д.)
+      """
+      type: String!
+    
+      """
+      Номер документа
+      """
+      number: String!
+    
+      """
+      Дата выдачи документа
+      """
+      issueDate: String!
+    
+      """
+      Дата окончания действия документа
+      """
+      expiryDate: String
+    }
+
+    """
+    Родственник клиента
+    """
+    type Relative {
+      """
+      Уникальный идентификатор родственника
+      """
+      id: ID!
+    
+      """
+      Тип родственной связи (супруг, ребенок, родитель и т.д.)
+      """
+      relationType: String!
+    
+      """
+      Имя родственника
+      """
+      name: String!
+    
+      """
+      Возраст родственника
+      """
+      age: Int!
+    }
+
+  queries:
+    - name: GetClient
+      description: Получить основную информацию о клиенте
+      example: |
+        query GetClient($id: ID!) {
+          client(id: $id) {
+            id
+            name
+            age
+          }
+        }
+
+    - name: GetClientWithDocuments
+      description: Получить клиента с документами
+      example: |
+        query GetClientWithDocuments($id: ID!) {
+          client(id: $id) {
+            id
+            name
+            age
+            documents {
+              id
+              type
+              number
+              issueDate
+            }
+          }
+        }
+
+    - name: GetFullClientInfo
+      description: Получить полную информацию о клиенте
+      example: |
+        query GetFullClientInfo($id: ID!) {
+          client(id: $id) {
+            id
+            name
+            age
+            documents {
+              id
+              type
+              number
+              issueDate
+              expiryDate
+            }
+            relatives {
+              id
+              relationType
+              name
+              age
+            }
+          }
+        }
